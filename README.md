@@ -1,5 +1,3 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://banners.beyondco.de/OLW.png?theme=light&packageManager=&packageName=by+Beer+%26+Code&pattern=architect&style=style_1&description=OPEN+LARAVEL+WEEK&md=1&showWatermark=0&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg" width="650"></a></p>
-
 # Instalando o projeto
 
 O projeto se utiliza de contêineres Docker, através do pacote *Laravel Sail* para facilitar a configuração do ambiente de desenvolvimento. Portanto, é necessário que já possua o Docker e o Docker Compose instalados na máquina.
@@ -62,3 +60,25 @@ Migrations são uma maneira de versionar as tabelas de sua base de dados. Para e
 - Execute `./vendor/bin/sail art migrate` para montar sua adicionar as tabelas ao seu banco
 
 - Execute `./vendor/bin/sail art db:seed` para popular o seu banco com dados fictícios
+
+# Instalando a API OpenAI
+1. Instale a biblioteca OpenAI para Laravel com Sail
+- Execute:
+- ./vendor/bin/sail composer require openai-php/laravel
+2. Publique o arquivo de configuração com Sail
+- Execute:
+./vendor/bin/sail artisan vendor:publish --provider="OpenAI\Laravel\ServiceProvider"
+Isso irá criar o arquivo config/openai.php
+3. Adicione a API Key no .env
+- Adicione no seu .env: OPENAI_API_KEY=coloque_sua_chave_aqui
+4. Verifique o arquivo config/openai.php
+- O config/openai.php deve estar assim (ou parecido):
+  
+return [
+    'api_key' => env('OPENAI_API_KEY'),
+];
+
+5. Limpe o cache de configuração
+- Depois de ajustar o .env, execute:
+- ./vendor/bin/sail artisan config:clear
+- ./vendor/bin/sail artisan cache:clear
