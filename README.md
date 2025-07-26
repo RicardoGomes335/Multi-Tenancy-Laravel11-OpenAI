@@ -65,12 +65,15 @@ Migrations são uma maneira de versionar as tabelas de sua base de dados. Para e
 1. Instale a biblioteca OpenAI para Laravel com Sail
 - Execute:
 - ./vendor/bin/sail composer require openai-php/laravel
+
 2. Publique o arquivo de configuração com Sail
 - Execute:
 ./vendor/bin/sail artisan vendor:publish --provider="OpenAI\Laravel\ServiceProvider"
 Isso irá criar o arquivo config/openai.php
+
 3. Adicione a API Key no .env
 - Adicione no seu .env: OPENAI_API_KEY=coloque_sua_chave_aqui
+
 4. Verifique o arquivo config/openai.php
 - O config/openai.php deve estar assim (ou parecido):
   
@@ -82,3 +85,37 @@ return [
 - Depois de ajustar o .env, execute:
 - ./vendor/bin/sail artisan config:clear
 - ./vendor/bin/sail artisan cache:clear
+
+# Para obter uma chave de API da OpenAI e usá-la no seu .env, siga os passos abaixo:
+1. Crie uma conta na OpenAI
+- Acesse: https://platform.openai.com/signup
+- Faça login com Google, Microsoft, ou e-mail.
+
+2. Acesse o Painel da OpenAI
+- Vá para: https://platform.openai.com/account/api-keys
+
+3. Gere uma nova API Key
+- Clique em "Create new secret key".
+- Dê um nome para a chave (exemplo: LaravelApp).
+- Copie a chave exibida (ela será mostrada apenas uma vez).
+
+4. Adicione a chave no seu arquivo .env
+- No seu projeto Laravel, abra o arquivo .env e adicione:No seu projeto Laravel, abra o arquivo .env e adicione:
+- OPENAI_API_KEY=sua_chave_aqui
+
+5. Teste no Laravel Sail
+- Execute:
+- ./vendor/bin/sail artisan tinker
+- E dentro do Tinker teste:
+- OpenAI::models()->list(); (Se tudo estiver correto, ele listará os modelos da OpenAI.)
+
+6. Importe o pacote OpenAI em: app/Livewire/Dashboard.php
+- use OpenAI\Laravel\Facades\OpenAI;
+- setar o modelo da API = gpt-3.5-turbo-instruct em: app/Livewire/Dashboard.php
+
+        $this->config =  OpenAI::completions()->create([
+
+            'model' => 'gpt-3.5-turbo-instruct', // Pode usar 'gpt-4o-mini' ou 'gpt-4o'
+            'prompt' => "Considerando a lista de campos ($fields), gere uma configuração json do Vega-lite v5 (sem campo de dados e com descrição) que atenda o seguinte pedido {$this->question}. Resposta:",
+            'max_tokens' => 1500
+        ])->choices[0]->text;
