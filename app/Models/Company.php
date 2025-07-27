@@ -20,8 +20,8 @@ class Company extends Model
         return $this->hasMany(Seller::class);
     }
 
-    publi function clientes(): HasMany
+    public function clientes(): HasMany
     {
-        return $this->hasMany(Company::class)
+        return $this->hasMany(Company::class);
     }
 }
