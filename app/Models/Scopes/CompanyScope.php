@@ -14,6 +14,9 @@ class CompanyScope implements Scope
     public function apply(Builder $builder, Model $model): void
     {
         // Tratar o filtro na query para exibir apenas as empresas relacionadas á um único usuário
-        // $builder->where('company_id', auth()->user()->seller->company_id);
+        if (session()->has('company_id')) {
+            $builder->where('company_id', session()->get('company_id'));
+        }
+
     }
 }
